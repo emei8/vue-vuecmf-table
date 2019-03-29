@@ -1,0 +1,15 @@
+import vcTable from './table.vue'
+import 'babel-polyfill'
+
+const VueVuecmfTablePlugin = {
+    install: function(Vue) {
+        Vue.component(vcTable.name, vcTable)
+    }
+}
+
+// global 情况下 自动安装
+if (typeof window !== 'undefined' && window.Vue) {
+    window.Vue.use(VueVuecmfTablePlugin)
+}
+// 导出模块
+export default VueVuecmfTablePlugin
