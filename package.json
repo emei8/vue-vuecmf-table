@@ -1,10 +1,10 @@
 {
   "name": "vue-vuecmf-table",
   "description": "基于vue2和element-ui的列表组件，内置搜索、筛选、分页、导出EXCEL等功能",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "author": "emei8 <386196596@qq.com>",
   "license": "MIT",
-  "main": "dist/vue-vuecmf-table.js",
+  "main": "src/lib/vue-vuecmf-table/index.js",
   "directories": {
     "dist": "dist"
   },
@@ -22,7 +22,17 @@
     "file-saver": "^2.0.0-rc.4",
     "font-awesome": "^4.7.0",
     "vue": "^2.5.22",
-    "xlsx": "^0.14.0"
+    "xlsx": "^0.14.0",
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-plugin-component": "^1.1.1",
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-env": "^1.6.0",
+    "babel-preset-stage-3": "^6.24.1",
+    "css-loader": "^2.1.0",
+    "file-loader": "^1.1.4",
+    "vue-loader": "^15.5.1",
+    "vue-template-compiler": "^2.5.22"
   },
   "browserslist": [
     "> 1%",
