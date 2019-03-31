@@ -1,7 +1,8 @@
 # vue-vuecmf-table
 
 > 基于vue2和element-ui的列表组件，内置搜索、筛选、分页、导出EXCEL等功能
-> 由于vuecmf-table使用组件调整为iview,  所以从vuecmf-table的1.0.6版本分出来，此版本使用的组件为element-ui
+
+项目说明：由于vuecmf-table使用组件调整为iview,  所以针对element-ui用户特从vuecmf-table的1.0.6版本分出来，使用组件为element-ui
 
 ## 安装
 
@@ -90,20 +91,7 @@ Vue.use(vcTable)
                 "currency": "1",
                 "quantity": "100",
                 "unit_price": "85.0000",
-                "status": "10",
-                "expandData":{
-                    "type":"table",
-                    "tableFields":[
-                        {"label":"需求单号","prop":"order_sn"},
-                        {"label":"调拨类型","prop":"type"},
-                        {"label":"计划数量","prop":"num"}
-                    ],
-                    "tableList":[
-                        {"order_sn":"dbd903452","type":"POP","num":300},
-                        {"order_sn":"dbd123123","type":"POP","num":400},
-                        {"order_sn":"dbd144155","type":"POP","num":580}
-                    ]
-                }
+                "status": "10"
             },
             {
                 "id": "62",
@@ -115,20 +103,7 @@ Vue.use(vcTable)
                 "currency": "4",
                 "quantity": "200",
                 "unit_price": "33.0000",
-                "status": "10",
-                "expandData":{
-                    "type":"table",
-                    "tableFields":[
-                        {"label":"需求单号","prop":"order_sn"},
-                        {"label":"调拨类型","prop":"type"},
-                        {"label":"计划数量","prop":"num"}
-                    ],
-                    "tableList":[
-                        {"order_sn":"dbd903452","type":"POP","num":300},
-                        {"order_sn":"dbd123123","type":"POP","num":400},
-                        {"order_sn":"dbd144155","type":"POP","num":580}
-                    ]
-                }
+                "status": "10"
             },
             {
                 "id": "60",
@@ -140,20 +115,7 @@ Vue.use(vcTable)
                 "currency": "3",
                 "quantity": "300",
                 "unit_price": "50.0000",
-                "status": "10",
-                "expandData":{
-                    "type":"table",
-                    "tableFields":[
-                        {"label":"需求单号","prop":"order_sn"},
-                        {"label":"调拨类型","prop":"type"},
-                        {"label":"计划数量","prop":"num"}
-                    ],
-                    "tableList":[
-                        {"order_sn":"dbd903452","type":"POP","num":300},
-                        {"order_sn":"dbd123123","type":"POP","num":400},
-                        {"order_sn":"dbd144155","type":"POP","num":580}
-                    ]
-                }
+                "status": "10"
             }      
         ]
     }
