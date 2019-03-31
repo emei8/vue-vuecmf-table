@@ -8,10 +8,10 @@
                 <el-row type="flex" justify="end">
 
                     <el-input size="small"
-                            placeholder="请输入内容"
-                            v-model="keywords"
-                            @change="search"
-                            clearable>
+                              placeholder="请输入内容"
+                              v-model="keywords"
+                              @change="search"
+                              clearable>
                     </el-input>
 
                     <el-button type="default" size="small" title="刷新" @click="refresh"><i class="fa fa-refresh"></i></el-button>
@@ -19,7 +19,7 @@
                             placement="bottom"
                             v-model="filter_show"
                             :width="filter_form_width"
-                            >
+                    >
                         <el-form :inline="true" :model="filterForm"  ref="filterForm"  class="filter-form-inline " size="small">
                             <div class="filter-form-content">
                                 <template v-for="(item,index) in columns" >
@@ -40,7 +40,7 @@
                                                     v-model="filterForm[item.prop]"
                                                     type="daterange"
                                                     value-format="yyyy-MM-dd HH:mm:ss"
-                                                    >
+                                            >
                                             </el-date-picker>
 
                                             <el-date-picker
@@ -48,7 +48,7 @@
                                                     v-model="filterForm[item.prop]"
                                                     type="datetimerange"
                                                     value-format="yyyy-MM-dd HH:mm:ss"
-                                                    >
+                                            >
                                             </el-date-picker>
 
                                         </el-form-item>
@@ -117,19 +117,19 @@
                 @selection-change="getSelectRows"
         >
             <el-table-column v-if="checkbox"
-                    fixed
-                    type="selection"
-                    :selectable="selectable"
-                    width="50">
+                             fixed
+                             type="selection"
+                             :selectable="selectable"
+                             width="50">
             </el-table-column>
             <template v-for="(item,index) in columns">
                 <el-table-column v-if="item.show"
-                        :prop="item.prop"
-                        :label="item.label"
-                        :sortable="item.sortable"
-                        :fixed= "item.fixed"
-                        :width="item.width"
-                        >
+                                 :prop="item.prop"
+                                 :label="item.label"
+                                 :sortable="item.sortable"
+                                 :fixed= "item.fixed"
+                                 :width="item.width"
+                >
 
                     <template slot="header" slot-scope="scope">
                         <el-tooltip v-if="item.tooltip" placement="bottom" effect="light">
@@ -159,7 +159,7 @@
                     fixed="right"
                     label="操作"
                     :width="operateWidth"
-                    >
+            >
                 <template slot-scope="scope" >
                     <span v-for="(item,k) in rowAction">
                         <template v-if=" item.callback == undefined || item.callback(scope.$index, scope.row) == false || scope.row.callback_result == false ">
@@ -201,7 +201,8 @@
                 :close-on-click-modal="false"
                 :close-on-press-escape="false"
                 :show-close="false"
-                >
+                class="download-tips-dlg"
+        >
             <span class="el-tag--danger">{{downloadError}}</span>
             <el-progress :text-inside="true" :stroke-width="18" :percentage="percentage"></el-progress>
         </el-dialog>
@@ -216,17 +217,15 @@
     import axios from 'axios'
     import jsonExport from './jsonExport'
 
-    /*
-    如果elementUI页面使用CDN外链接引入的话，则注释这段
+    //如果elementUI页面使用CDN外链接引入的话，则注释这段
     import 'font-awesome/css/font-awesome.min.css'
     import ElementUI from 'element-ui'
     import 'element-ui/lib/theme-chalk/index.css'
     Vue.use(ElementUI)
-    */
 
     export default {
         name:'vc-table',
-        props:['edit','del','selectable','cellEvent','checkbox','headerAction','rowAction','server','page','limit','height','operateWidth'],//头部按钮
+        props:['edit','del','selectable','cellEvent','checkbox','rowAction','server','page','limit','height','operateWidth'],//头部按钮
         data() {
             return {
 
@@ -248,7 +247,7 @@
                 exportData: [], //导出的数据
                 exportFileType: 'xlsx', //导出的文件类型
                 totalPages: 1, //总页数
-                downloadTips: false, //下载进度提示框的显示与隐藏
+                downloadTips: true, //下载进度提示框的显示与隐藏
                 percentage:0, //下载进度
                 downloadError:'', //下载错误提示
                 loading:false,
@@ -274,12 +273,12 @@
             }
 
         },
-       /* watch:{
-            filterForm: function(newFilterForm){
-                this.$refs['filterForm'].resetFields();
-                console.log(newFilterForm)
-            }
-        },*/
+        /* watch:{
+             filterForm: function(newFilterForm){
+                 this.$refs['filterForm'].resetFields();
+                 console.log(newFilterForm)
+             }
+         },*/
         updated() {
             let that = this
             //执行外部传入的事件
@@ -344,16 +343,6 @@
                 //调用外部函数
                 callfun(index,row)
             },
-            //添加表单
-            add: function () {
-
-            },
-            pivot: function () {
-                /*this.$exportExcel({
-                    url: 'http://www.b2b.com/api/Table/index'
-                })*/
-            },
-
             //拉取数据
             pullData: function (currentPage,callback,action) {
                 let url = this.server
@@ -392,7 +381,7 @@
             //加载表格字段回调
             updateTableField: function (data) {
                 let that = this
-                this.columns = data.data.fields
+                this.columns = data.data.data.fields
                 this.columns.forEach(function (val,key) {
                     let filterName = val['prop']
                     if(val['filterName'] != '' &&  val['filterName'] != undefined){
@@ -424,13 +413,13 @@
             },
             //拉取要导出的数据的回调
             getExportData: function (data) {
-                if(data.data.data == undefined){
+                if(data.data.data.data == undefined){
                     this.downloadError = '接口异常，无法拉取数据！';
                     return false
                 }
 
                 let that = this
-                data.data.data.forEach(function (val, index) {
+                data.data.data.data.forEach(function (val, index) {
                     let item = []
                     //将下载的字段名替换成表格的表头名称
                     that.columns.forEach(function (v,k) {
@@ -515,15 +504,15 @@
             },
             //拉取列表数据的回调
             getList(data){
-                if(data.data.data == undefined){
+                if(data.data.data.data == undefined){
                     let msg = '接口异常，无法拉取数据！'
                     if(data.data.message != undefined) msg = msg + data.data.message
                     if(data.data.msg != undefined) msg = msg + data.data.msg
                     this.$message.error(msg);
                     return false
                 }
-                this.tableData = data.data.data
-                this.total = parseInt(data.data.total)
+                this.tableData = data.data.data.data
+                this.total = parseInt(data.data.data.total)
                 this.totalPages = Math.ceil(this.total / this.pageSize)
                 this.loading = false
 
@@ -553,7 +542,7 @@
     .table-tools{ text-align: right}
     .btn-group{ text-align: left}
     .dropdown-content{ max-height: 260px; padding: 10px 15px; overflow-y: auto; max-width: 500px; overflow-x: auto }
-    .table-tools .el-button{ margin-left: -1px !important;  border-radius: 0px;}
+    .table-tools .el-button{ margin-left: -1px !important;  border-radius: 0px; height: 32px; line-height: 16px;}
     .el-dropdown:last-child .el-button{ border-top-right-radius: 4px !important; border-bottom-right-radius: 4px !important;  }
     .el-date-editor--daterange.el-input, .el-date-editor--daterange.el-input__inner{
         width: 100%  !important;
@@ -563,8 +552,6 @@
     }
     .filter-form-content{
         max-height:460px; display: block; overflow-y: auto;}
-
-
 
 </style>
 
@@ -578,7 +565,7 @@
     .el-popover{ max-width: 860px !important; }
 
     .el-dialog{ margin-top: 5vh !important;}
-    .el-dialog__body{ height:60vh;overflow: auto;}
 
+    .download-tips-dlg .el-dialog{ margin-top: 25vh !important;}
 </style>
 

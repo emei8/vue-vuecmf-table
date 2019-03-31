@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <h2>vue-vuecmf-table demo</h2>
-    <vc-table  :edit="true" :del="true" :selectable="selectable" :checkbox="true"  ref="vcTable"  :header-action="headerAction" :cell-event="cellEvent" :row-action="rowAction" server="http://www.b2b.com/api/Table/index" page="page" :limit="20"  :operate-width="200">
+    <vc-table  :edit="true" :del="true" :selectable="selectable" :checkbox="true"  ref="vcTable"  :cell-event="cellEvent" :row-action="rowAction" server="http://www.b2b.com/api/Table/index" page="page" :limit="20"  :operate-width="200">
       <template v-slot:headerAction>
           <el-button size="mini" type="primary" @click.native.prevent="add" >添加</el-button>
       </template>
@@ -29,27 +29,6 @@ export default {
             }
 
         },
-        headerAction:[
-            {
-                event: function (selectRows) {
-                    console.log(selectRows)
-                },
-                title: '测试',
-                label: '测试',
-                type: 'success',
-                icon: 'fa fa-plus-circle'
-            },
-            {
-                event: function (selectRows) {
-                    console.log(selectRows)
-                    alert('测试2')
-                },
-                title: '测试2',
-                label: '测试2',
-                type: 'primary',
-                icon: 'fa fa-edit'
-            }
-        ],
         //针对自定义单元格内容的事件处理， 可借助jquery进行DOM操作和事件处理
         cellEvent:
             function (currentList) { //currentList 为当前页列表数据
