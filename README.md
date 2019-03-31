@@ -1,6 +1,7 @@
 # vue-vuecmf-table
 
 > 基于vue2和element-ui的列表组件，内置搜索、筛选、分页、导出EXCEL等功能
+> 由于vuecmf-table使用组件调整为iview,  所以从vuecmf-table的1.0.6版本分出来，此版本使用的组件为element-ui
 
 ## 安装
 
