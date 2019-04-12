@@ -1,7 +1,9 @@
 <template>
   <div id="app">
     <h2>vue-vuecmf-table demo</h2>
-    <vc-table  :edit="true" :del="true" :selectable="selectable" :checkbox="true"  ref="vcTable"  :cell-event="cellEvent" :row-action="rowAction" server="http://www.b2b.com/api/Table/index" page="page" :limit="20"  :operate-width="200">
+    <vc-table  :edit="true" :del="true" :selectable="selectable" :checkbox="true"  ref="vcTable"  :cell-event="cellEvent" :row-action="rowAction" server="http://www.billsystem.com/bill/mymall/bill" page="page" :limit="20"  :operate-width="200"
+               import-server="http://www.billsystem.com/bill/mymall/importData?table=mymall_bill"
+    >
       <template v-slot:headerAction>
           <el-button size="mini" type="primary" @click.native.prevent="add" >添加</el-button>
       </template>

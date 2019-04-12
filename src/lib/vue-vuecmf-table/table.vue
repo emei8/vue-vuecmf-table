@@ -87,6 +87,8 @@
                         </el-dropdown-menu>
                     </el-dropdown>
 
+                    <el-button type="default" size="small"  title="导入" @click="importModal = true"><i class="fa fa-cloud-upload"></i></el-button>
+
                     <el-dropdown trigger="click" @command="downloadExport">
                         <el-button type="default" size="small" title="导出">
                             <i class="fa fa-sign-out"></i>
@@ -208,6 +210,30 @@
         </el-dialog>
 
 
+        <!-- 导入数据 -->
+        <el-dialog :visible.sync="importModal" title="导入" >
+            <el-row class="import-btn">
+                <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12">
+                    <el-button  type="success" @click="downloadTemplate" >下载模板</el-button>
+                </el-col>
+                <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12">
+                    <input type="file" ref="importExcelForm" class="file-form" @change="importExcel" >
+                    <el-button  type="primary" @click="triggerUpload">上传文件</el-button>
+                </el-col>
+            </el-row>
+            <el-row>
+                <el-col>
+                    <el-progress  :text-inside="true"  :stroke-width="18" :percentage="importExcelPercentage"></el-progress>
+                </el-col>
+            </el-row>
+
+            <template slot="footer">
+                <el-button type="default"  @click="importModal = false">取消</el-button>
+                <el-button type="primary"  @click="startImportData">开始</el-button>
+            </template>
+        </el-dialog>
+
+
     </div>
 
 </template>
@@ -215,19 +241,24 @@
 <script>
     import Vue from 'vue'
     import axios from 'axios'
-    import jsonExport from './jsonExport'
+    import {jsonExport,jsonImport} from './jsonUtils'
 
     //如果elementUI页面使用CDN外链接引入的话，则注释这段
-    import 'font-awesome/css/font-awesome.min.css'
+   /* import 'font-awesome/css/font-awesome.min.css'
     import ElementUI from 'element-ui'
     import 'element-ui/lib/theme-chalk/index.css'
-    Vue.use(ElementUI)
+    Vue.use(ElementUI)*/
 
     export default {
         name:'vc-table',
-        props:['edit','del','selectable','cellEvent','checkbox','rowAction','server','page','limit','height','operateWidth'],//头部按钮
+        props:['importServer','edit','del','selectable','cellEvent','checkbox','rowAction','server','page','limit','height','operateWidth'],//头部按钮
         data() {
             return {
+                //数据导入相关
+                importModal: false, //是否显示导入对话框
+                importExcelData: [], //导入的文件内容
+                importExcelPercentage:0, //导入进度百分比
+                importCurrentPage:0, //导入当前进度页
 
                 //筛选表单
                 filterForm: {},
@@ -247,7 +278,7 @@
                 exportData: [], //导出的数据
                 exportFileType: 'xlsx', //导出的文件类型
                 totalPages: 1, //总页数
-                downloadTips: true, //下载进度提示框的显示与隐藏
+                downloadTips: false, //下载进度提示框的显示与隐藏
                 percentage:0, //下载进度
                 downloadError:'', //下载错误提示
                 loading:false,
@@ -288,6 +319,109 @@
             }
         },
         methods: {
+            //格式化日期
+            dateFormat(dateObj,fmt){
+                let obj = {
+                    "m+" : dateObj.getMonth() + 1,                 //月份
+                    "d+" : dateObj.getDate() - 1,                    //日
+                    "H+" : dateObj.getHours(),                   //小时
+                    "i+" : dateObj.getMinutes(),                 //分
+                    "s" : dateObj.getSeconds(),                 //秒
+                };
+                if(/(Y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (dateObj.getFullYear()+""));
+                for(let k in obj){
+                    if(new RegExp("("+ k +")").test(fmt)){
+                        fmt = fmt.replace(RegExp.$1, obj[k] < 10 ? "0" + obj[k] : obj[k]);
+                    }
+                }
+                return fmt;
+            },
+            //触发上传事件
+            triggerUpload(){
+                this.importExcelPercentage = 0
+                this.importCurrentPage = 0
+                this.$refs.importExcelForm.click()
+            },
+            //上传导入EXCEL
+            importExcel(fileForm){
+                if(fileForm.target.files[0].type != 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' && fileForm.target.files[0].type != 'application/vnd.ms-excel'){
+                    this.$Message.error('上传文件类型错误！只能上传文件xlsx,xls类型文件');
+                    return false
+                }
+                jsonImport(fileForm.target,this.callbackUploadExcelData)
+            },
+            //获取上传的EXCEL数据的回调函数
+            callbackUploadExcelData(file_data){
+                let that = this
+                if(file_data.length == 0) return false
+
+                let newData = []
+
+                file_data.forEach(function (v,k) {
+                    let item_data = {}
+                    that.columns.forEach(function (val, key) {
+                        if(val['label'] != undefined && val['prop'] != 'action'){
+                            let new_val = v[val['label']]
+
+                            if((val['data_type'] == 'datetime' || val['data_type'] == 'date') && new_val > 40000 && new_val < 90000){
+                                new_val = that.dateFormat(new Date(1900, 0, new_val),'Y/m/d H:i:s')  //如果日期变成类似42747 则用这种方式转换
+                            }
+                            if(val['options'] != undefined && val['options'] != ''){
+                                val['options'].forEach(function(sv,sk){
+                                    if(sv == new_val){
+                                        new_val = sk
+                                    }
+                                })
+                            }
+                            item_data[val['prop']] = new_val != undefined ? new_val : '';
+                        }
+
+                    })
+                    newData[k] = item_data
+                })
+
+                this.importExcelData = newData
+            },
+            //开始导入数据
+            startImportData(){
+                let that = this
+
+                //每次处理500条
+                let pageNum = 1000
+                let pages = Math.ceil(that.importExcelData.length / pageNum)
+
+                if(that.importCurrentPage >= pages) return false
+
+                let post_data = that.importExcelData.slice(that.importCurrentPage * pageNum,(that.importCurrentPage + 1) * pageNum)
+
+                if(post_data != '' && post_data != null && post_data.length != 0){
+                    that.post(that.importServer,{data:post_data}).then(function(data){
+                        console.log(data)
+                        if(data.status == 200){
+                            that.importExcelPercentage = Math.ceil((that.importCurrentPage + 1) / pages * 100)
+                        }
+                        that.importCurrentPage ++
+                        that.startImportData()
+                    })
+                }
+
+            },
+            //下载模板文件
+            downloadTemplate(){
+                let tpl_data = []
+                let item = []
+
+                //将下载的字段名替换成表格的表头名称
+                this.columns.forEach(function (v,k) {
+                    if(v['prop'] != 'action' && v['prop'] != undefined){
+                        //过滤HTML标签
+                        let label = v['label'].replace(/<[^>]*>/g,'')
+                        item[label] = ''
+                    }
+                });
+                tpl_data.push(item)
+                jsonExport(tpl_data,'xlsx','数据模板')
+            },
             //添加表单
             addForm: function () {
                 this.dataForm_show = true
@@ -567,5 +701,6 @@
     .el-dialog{ margin-top: 5vh !important;}
 
     .download-tips-dlg .el-dialog{ margin-top: 25vh !important;}
+    .file-form{ display: none; }
 </style>
 
