@@ -2,7 +2,7 @@
     <div>
         <el-row :gutter="10" >
             <el-col :xs="24" :sm="8" :md="8" :lg="8" :xl="8"  class="btn-group">
-                <slot name="headerAction"></slot>
+                <slot name="headerAction" :selectRows="selectRows"></slot>
             </el-col>
             <el-col :xs="24" :sm="16" :md="16" :lg="16" :xl="16" class="table-tools">
                 <el-row type="flex" justify="end">
@@ -157,28 +157,17 @@
             </template>
 
             <el-table-column
-                    v-if="rowAction"
+                    v-if="operateWidth"
                     fixed="right"
                     label="操作"
                     :width="operateWidth"
             >
                 <template slot-scope="scope" >
-                    <span v-for="(item,k) in rowAction">
-                        <template v-if=" item.callback == undefined || item.callback(scope.$index, scope.row) == false || scope.row.callback_result == false ">
-                            <el-button style="margin-right: 5px"
-                                       size="mini"
-                                       :type="item.type"
-                                       @click.native.prevent="rowFun(item.event,scope.$index, scope.row)" ><i :class="item.icon"></i> {{item.title}}</el-button>
-                        </template>
-                        <template v-else>
-                            <span v-html="scope.row.callback_result"></span>
-                        </template>
 
-                    </span>
+                    <slot name="rowAction" :row="scope.row" :index="scope.$index"></slot>
 
                 </template>
             </el-table-column>
-
 
         </el-table>
 
@@ -251,7 +240,7 @@
 
     export default {
         name:'vc-table',
-        props:['importServer','edit','del','selectable','cellEvent','checkbox','rowAction','server','page','limit','height','operateWidth'],//头部按钮
+        props:['importServer','selectable','cellEvent','checkbox','server','page','limit','height','operateWidth'],//头部按钮
         data() {
             return {
                 //数据导入相关
@@ -464,14 +453,6 @@
             getSelectRows:function (selection) {
                 this.selectRows = selection
 
-            },
-            fun: function (callfun) {
-                //调用外部函数
-                callfun(this.selectRows)
-            },
-            rowFun: function (callfun,index,row) {
-                //调用外部函数
-                callfun(index,row)
             },
             cellFun: function (callfun,index,row) {
                 //调用外部函数

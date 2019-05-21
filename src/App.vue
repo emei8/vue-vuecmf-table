@@ -1,11 +1,23 @@
 <template>
   <div id="app">
     <h2>vue-vuecmf-table demo</h2>
-    <vc-table  :edit="true" :del="true" :selectable="selectable" :checkbox="true"  ref="vcTable"  :cell-event="cellEvent" :row-action="rowAction" server="http://www.billsystem.com/bill/mymall/bill" page="page" :limit="20"  :operate-width="200"
-               import-server="http://www.billsystem.com/bill/mymall/importData?table=mymall_bill"
+    <vc-table
+            :selectable="selectable"
+            :checkbox="true"
+            ref="vcTable"
+            :cell-event="cellEvent"
+            server="http://www.b2b.com/api/Table/index"
+            page="page"
+            :limit="20"
+            :operate-width="100"
+            import-server="http://www.b2b.com/api/Table/importData"
     >
-      <template v-slot:headerAction>
-          <el-button size="mini" type="primary" @click.native.prevent="add" >添加</el-button>
+      <template #headerAction="selectRows">
+          <el-button size="mini" type="primary" @click.native.prevent="add(selectRows)" >添加</el-button>
+      </template>
+
+      <template #rowAction="{ row, index}">
+          <el-button size="mini" type="success" @click.native.prevent="test(row)">test {{ index }}</el-button>
       </template>
 
     </vc-table>
@@ -17,10 +29,12 @@
     import Vue from 'vue'
     import ElementUI from 'element-ui'
     import 'element-ui/lib/theme-chalk/index.css'
+    import ElButton from "../node_modules/element-ui/packages/button/src/button.vue";
     Vue.use(ElementUI)
 
 export default {
-  name: 'app',
+    components: {ElButton},
+    name: 'app',
   data () {
     return {
         selectable: function (row, index) {
@@ -37,41 +51,17 @@ export default {
                 console.log('cellevent')
                 console.log(currentList)
             }
-        ,
-        rowAction:[
-            {
-                event: function (index,row) {
-                    console.log(index,row)
-                },
-                title: '编辑',
-                type: 'success',
-                icon: '',
-                callback: function(index,row){  //自定义操作项内容
-                    if(row.status == 10){
-                        return false;  //返回false 则不替换操作按钮
-                    }else{
-                        return 'hello world'  //替换操作按钮内容
-                    }
-                }
-            },
-            {
-                event: function (index,row) {
-                    console.log(index,row)
-                },
-                title: '删除',
-                type: 'primary',
-                icon: '',
-                callback: function(index,row){  //自定义操作项内容
 
-                }
-            }
-        ]
+
     }
   },
     methods:{
-      add:function () {
-          alert('add')
-      }
+          add:function (selectRows) {
+              console.log(selectRows)
+          },
+          test:function (row) {
+              console.log(row)
+          }
     },
   mounted: function () {
       let that = this
