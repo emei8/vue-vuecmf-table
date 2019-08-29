@@ -4,6 +4,8 @@
 
 项目说明：由于vuecmf-table使用组件调整为iview,  所以针对element-ui用户特从vuecmf-table的1.0.6版本分出来，使用组件为element-ui
 
+- 示例演示： http://www.vuecmf.com
+
 ## 安装
 
 ``` bash
@@ -42,7 +44,7 @@ Vue.use(vcTable)
         "fields": [
             {
                 "prop": "id",  //字段名称
-                "label": "",  //表头显示名称
+                "label": "ID",  //表头显示名称
                 "data_type": "int", //字段值类型
                 "sortable": true, //是否可排序
                 "show": false, //默认是否在表格中显示
@@ -50,8 +52,8 @@ Vue.use(vcTable)
                 "filter": false //是否可筛选
             },
             {
-                "prop": "inquiry_sheet_id",
-                "label": "inquiry_sheet的id",
+                "prop": "area",
+                "label": "地区",
                 "data_type": "hidden",
                 "sortable": true,
                 "show": false,
@@ -83,38 +85,38 @@ Vue.use(vcTable)
         "data": [
             {
                 "id": "63",
-                "sku": "DEALT001",
+                "sku": "EUR001",
                 "area": "欧洲区",
                 "sku_name": "VC泡腾片 樱桃味 20片",
-                "upc": "4305615274539",
+                "upc": "7905615274539",
                 "unit": "瓶",
                 "currency": "1",
                 "quantity": "100",
-                "unit_price": "85.0000",
+                "unit_price": "89.0000",
                 "status": "10"
             },
             {
                 "id": "62",
-                "sku": "DEAB019",
+                "sku": "EUR019",
                 "area": "欧洲区",
                 "sku_name": "南瓜籽蔓越莓胶囊 30粒",
-                "upc": "4250752201118/4026600561310",
+                "upc": "7926600561310",
                 "unit": "盒",
                 "currency": "4",
                 "quantity": "200",
-                "unit_price": "33.0000",
+                "unit_price": "39.0000",
                 "status": "10"
             },
             {
                 "id": "60",
-                "sku": "DEALT002",
+                "sku": "EUR002",
                 "area": "欧洲区",
                 "sku_name": "VC泡腾片 香橙味 微量元素 20片",
-                "upc": "4305615205298",
+                "upc": "5605615205298",
                 "unit": "瓶",
                 "currency": "3",
                 "quantity": "300",
-                "unit_price": "50.0000",
+                "unit_price": "59.0000",
                 "status": "10"
             }      
         ]
