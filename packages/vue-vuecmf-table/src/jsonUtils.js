@@ -24,7 +24,7 @@ let sheet2blob = function (sheet, fileType, sheetName) {
         type: 'binary'
     };
     let wbout = XLSX.write(workbook, wopts);
-    let blob = new Blob([stringToBuffer(wbout)], {type:"application/octet-stream"});
+    let blob = new Blob([stringToBuffer(wbout)], {type:"application/octet-stream,charset=UTF-8"});
 
     return blob;
 }
@@ -40,7 +40,7 @@ let sheet2blob = function (sheet, fileType, sheetName) {
 export function jsonExport(dataList,fileType,fileName) {
     let cur_date = new Date()
     let sheet = XLSX.utils.json_to_sheet(dataList)
-    FileSaver.saveAs(sheet2blob(sheet,fileType), fileName + cur_date.toLocaleString() + '.' + fileType)
+    FileSaver.saveAs(sheet2blob(sheet,fileType), fileName + '_' + cur_date.toLocaleString() + '.' + fileType)
 }
 
 /**

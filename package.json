@@ -1,60 +1,59 @@
 {
   "name": "vue-vuecmf-table",
-  "description": "基于vue2和element-ui的列表组件，内置搜索、筛选、分页、导出和导入EXCEL等功能",
-  "version": "1.2.0",
+  "version": "2.0.0",
+  "description": "基于vue2和element-ui的列表组件，内置搜索、筛选、分页、行展开、导出和导入EXCEL等功能",
+  "main": "lib/vctable.umd.min.js",
+  "keyword": "vue-vuecmf-table vuecmf-table vuecmf 列表组件 表格组件",
   "author": "emei8 <386196596@qq.com>",
   "license": "MIT",
-  "main": "src/lib/vue-vuecmf-table/index.js",
-  "directories": {
-    "dist": "dist"
-  },
+  "private": true,
   "scripts": {
-    "dev": "cross-env NODE_ENV=development webpack-dev-server --open --hot",
-    "build": "cross-env NODE_ENV=production webpack --progress --hide-modules"
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lib": "vue-cli-service build --target lib --name vctable --dest lib packages/index.js",
+    "lint": "vue-cli-service lint"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/emei8/vue-vuecmf-table.git"
   },
   "dependencies": {
-    "axios": "^0.18.0",
-    "element-ui": "^2.7.2",
-    "file-saver": "^2.0.0-rc.4",
+    "axios": "^0.21.1",
+    "core-js": "^3.6.5",
+    "element-ui": "^2.15.3",
+    "file-saver": "^2.0.5",
     "font-awesome": "^4.7.0",
-    "vue": "^2.6.0",
-    "xlsx": "^0.14.0",
-    "babel-core": "^6.26.0",
-    "babel-loader": "^7.1.2",
-    "babel-plugin-component": "^1.1.1",
-    "babel-polyfill": "^6.26.0",
-    "babel-preset-env": "^1.6.0",
-    "babel-preset-stage-3": "^6.24.1",
-    "css-loader": "^2.1.0",
-    "file-loader": "^1.1.4",
-    "vue-loader": "^15.5.1",
-    "vue-template-compiler": "^2.5.22"
+    "vue": "^2.6.11",
+    "xlsx": "^0.17.0"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "~4.5.0",
+    "@vue/cli-plugin-eslint": "~4.5.0",
+    "@vue/cli-service": "~4.5.0",
+    "babel-eslint": "^10.1.0",
+    "eslint": "^6.7.2",
+    "eslint-plugin-vue": "^6.2.2",
+    "vue-template-compiler": "^2.6.11"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "plugin:vue/essential",
+      "eslint:recommended"
+    ],
+    "parserOptions": {
+      "parser": "babel-eslint"
+    },
+    "rules": {}
   },
   "browserslist": [
     "> 1%",
     "last 2 versions",
-    "not ie <= 8"
+    "not dead"
   ],
-  "devDependencies": {
-    "babel-core": "^6.26.0",
-    "babel-loader": "^7.1.2",
-    "babel-plugin-component": "^1.1.1",
-    "babel-polyfill": "^6.26.0",
-    "babel-preset-env": "^1.6.0",
-    "babel-preset-stage-3": "^6.24.1",
-    "cross-env": "^5.0.5",
-    "css-loader": "^2.1.0",
-    "file-loader": "^1.1.4",
-    "vue-loader": "^15.5.1",
-    "vue-template-compiler": "^2.5.22",
-    "webpack": "^4.0.0",
-    "webpack-cli": "^3.2.1",
-    "webpack-dev-server": "^3.1.11"
-  },
   "bugs": {
     "url": "https://github.com/emei8/vue-vuecmf-table/issues"
   },
