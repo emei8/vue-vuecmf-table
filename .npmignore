@@ -1,6 +1,4 @@
 node_modules/
-examples/
-packages/
 public/
 .gitignore
 vue.config.js

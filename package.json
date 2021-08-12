@@ -1,8 +1,8 @@
 {
   "name": "vue-vuecmf-table",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "基于vue2和element-ui的列表组件，内置搜索、筛选、分页、行展开、导出和导入EXCEL等功能",
-  "main": "lib/vctable.umd.min.js",
+  "main": "packages/index.js",
   "keyword": "vue-vuecmf-table vuecmf-table vuecmf 列表组件 表格组件",
   "author": "emei8 <386196596@qq.com>",
   "license": "MIT",

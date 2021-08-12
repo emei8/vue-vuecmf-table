@@ -7,7 +7,7 @@ module.exports = {
       filename: 'index.html'
     }
   },
-  configureWebpack:{
+  /*configureWebpack:{
     externals:{
       'vue': 'Vue',
       'element-ui': 'ElementUI',
@@ -20,7 +20,7 @@ module.exports = {
       maxAssetSize: 500000, // 整数类型（以字节为单位）
       maxEntrypointSize: 500000 // 整数类型（以字节为单位）
     }
-  },
+  },*/
 
 
   // 扩展 webpack 配置，使 packages 目录加入编译
